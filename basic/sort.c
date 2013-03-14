@@ -1,6 +1,7 @@
 #include "sort.h"
-#include <iostream>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+static void swap(int* data, int a, int b);
 static int SubQuickSort(int* data, int start, int end)
 {
     if (data == NULL) return -1;
@@ -18,16 +19,32 @@ static int SubQuickSort(int* data, int start, int end)
 }
 int QuickSort(int* data, int start, int end)
 {
-    if (start <= end) {
-      int pivort = SubQuickSort(data, start, end);
+    while (start <=  end) {
+      int pivort = SubQuickSort2(data, start, end);
       QuickSort(data, start, pivort - 1);
-      QuickSort(data, pivort + 1, end);
+      start = pivort + 1;
+      //QuickSort(data, pivort + 1, end);
     }
 }
 
+int SubQuickSort2(int* data, int start, int end)
+{
+    int p_pivort = start, swap_index = start;
+    int v_pivort = data[start];
+    int i; 
+    for (i = start; i <= end; ++i) {
+        if (data[i] < v_pivort) {
+	  swap(data, i, swap_index);
+	  swap_index++;
+	}
+    }
+    data[swap_index] = v_pivort;
+    return swap_index;
+}
 static void Merge(int* data, int start, int mid, int end)
 {
     int t_data[1000], left = start, right = mid + 1, index = 0;
+    int i, j;
     while (left <= mid && right <= end) {
         if (data[left] <= data[right]) {
 	  t_data[index++] = data[left++];
@@ -41,7 +58,7 @@ static void Merge(int* data, int start, int mid, int end)
     while (right <= end) {
         t_data[index++] = data[right++];
     }
-    for (int i = 0, j = start; i < index; ) {
+    for (i = 0, j = start; i < index; ) {
         data[j++] = t_data[i++];
     }
 }
@@ -62,6 +79,18 @@ static inline void swap(int* data, int pos1, int pos2)
    data[pos2] ^= data[pos1];
    data[pos1] ^= data[pos2];
 }
+static void siftup(int *data, int pos)
+{
+    while (1) {
+        int i = (pos>>1);
+	if (i == 0) break;
+        if (data[pos] < data[i]) {
+	  swap(data, i, pos);
+	}
+	pos = i;
+    }
+}
+
 static void HeapRelay(int* data, int pos, int end) 
 {
    int t_pos = pos;
@@ -76,22 +105,36 @@ static void HeapRelay(int* data, int pos, int end)
 int HeapSort(int* data, int start, int end)
 {
     int h = (end - start + 1) / 2 - 1;
+    int i;
     for (; h >= 0; --h) {
         HeapRelay(data, h, end);
     }
-    for (int i = end; i > 0; --i) {
+    for (i = end; i > 0; --i) {
         swap(data, i, 0);
 	HeapRelay(data, 0, i - 1);
     }
 }
+int HeapSortSimple(int *data, int start, int end)
+{
+    int pos = start;
+    int i, j;
+    for (i = 1; i <= end; ++i) {
+        siftup(data, i);
+    }
+    for (j = end; j >= 1; --j) {
+        swap(data, j, 0);
+	HeapRelay(data, 0, j - 1);
+    }
+}
 int main()
 {
-    int a[] = {9, 8, 7, 6, 5, 4};
-    //QuickSort(a, 0, 5);
+    int a[] = {1, 8, 7, 3, 5, 4};
+    int i;
+    QuickSort(a, 0, 5);
     //MergeSort(a, 0, 5);
-    HeapSort(a, 0, 5);
-    for (int i = 0; i < 6; ++i) {
-      cout<<a[i]<<" ";
+    //HeapSort(a, 0, 5);
+    for (i = 0; i < 6; ++i) {
+        printf("%d ", a[i]);
     }
-    cout<<endl;
+    //cout<<endl;
 }
