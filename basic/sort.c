@@ -41,6 +41,22 @@ int SubQuickSort2(int* data, int start, int end)
     data[swap_index] = v_pivort;
     return swap_index;
 }
+int Midian(int arr[], int n)
+{
+    assert(arr != NULL && n>=1);
+    int midian = n/2;
+    int pivort, start = 0, end = n - 1;
+    do {
+    pivort = SubQuickSort2(arr, start, end);
+    if (pivort > midian) {
+      end = pivort - 1;
+    } else if (pivort < midian) {
+      start = pivort + 1; 
+    }
+    break;
+    } while(true);
+    return arr[pivort];
+}
 static void Merge(int* data, int start, int mid, int end)
 {
     int t_data[1000], left = start, right = mid + 1, index = 0;
