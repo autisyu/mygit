@@ -1,4 +1,5 @@
 #include "sort.h"
+#include<assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 static void swap(int* data, int a, int b);
@@ -32,13 +33,18 @@ int SubQuickSort2(int* data, int start, int end)
     int p_pivort = start, swap_index = start;
     int v_pivort = data[start];
     int i; 
-    for (i = start; i <= end; ++i) {
+    for (i = start + 1; i <= end; ++i) {
         if (data[i] < v_pivort) {
-	  swap(data, i, swap_index);
-	  swap_index++;
+	  swap(data, i, ++swap_index);
+	  //swap_index++;
 	}
     }
-    data[swap_index] = v_pivort;
+    swap(data, start, swap_index);
+    for (i = 0; i < 8; ++i) {
+        printf("%d ", data[i]);
+    }
+    printf("\n");
+    //data[swap_index] = v_pivort;
     return swap_index;
 }
 int Midian(int arr[], int n)
@@ -54,7 +60,7 @@ int Midian(int arr[], int n)
       start = pivort + 1; 
     }
     break;
-    } while(true);
+    } while(1);
     return arr[pivort];
 }
 static void Merge(int* data, int start, int mid, int end)
@@ -91,6 +97,7 @@ int MergeSort(int* data, int start, int end)
 }
 static inline void swap(int* data, int pos1, int pos2)
 {
+   if (pos2 == pos1) return;
    data[pos1] ^= data[pos2];
    data[pos2] ^= data[pos1];
    data[pos1] ^= data[pos2];
@@ -144,12 +151,12 @@ int HeapSortSimple(int *data, int start, int end)
 }
 int main()
 {
-    int a[] = {1, 8, 7, 3, 5, 4};
+    int a[] = {5, 1, 2, 7, 6, 8, 4, 3};
     int i;
-    QuickSort(a, 0, 5);
+    QuickSort(a, 0, 7);
     //MergeSort(a, 0, 5);
     //HeapSort(a, 0, 5);
-    for (i = 0; i < 6; ++i) {
+    for (i = 0; i < 8; ++i) {
         printf("%d ", a[i]);
     }
     //cout<<endl;

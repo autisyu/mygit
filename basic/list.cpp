@@ -68,7 +68,23 @@ bool DeleteElementByContent(LpList& head, int data)
 
 bool SortList(LpList& head)
 {
-
+    LpList s = head, p = head, node = head->next;
+    while (node) {
+        s           = head;
+	int data    = node->data;
+	while (s->next != node && (data > s->next->data)) {
+	    s = s->next;
+	}
+        if (s->next == node) {
+	    p = node, node = node->next;
+	    continue;
+	} else {
+	    p->next     = node->next;
+	    node->next  = s->next;
+	    s->next     = node;
+	    node        = p->next;
+	}
+    }
 }
 bool TraverseList(const LpList& head)
 {
@@ -84,3 +100,11 @@ bool TraverseList(const LpList& head)
     return 0;
 }
 
+int main()
+{
+    LpList head = new List();
+    CreateList(head, 5);
+    TraverseList(head);
+    SortList(head);
+    TraverseList(head);
+}
