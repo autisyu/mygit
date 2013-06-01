@@ -1,0 +1,9 @@
+#!/usr/local/bin/stap
+
+global current 
+function report(stat) {
+printf("stat=%d/n", stat)
+}
+probe end {
+report(current)
+}

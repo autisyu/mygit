@@ -30,22 +30,22 @@ int QuickSort(int* data, int start, int end)
 
 int SubQuickSort2(int* data, int start, int end)
 {
-    int p_pivort = start, swap_index = start;
+    int p_pivort = start, swap_index = start + 1;
     int v_pivort = data[start];
     int i; 
     for (i = start + 1; i <= end; ++i) {
         if (data[i] < v_pivort) {
-	  swap(data, i, ++swap_index);
-	  //swap_index++;
+	  swap(data, i, swap_index);
+	  swap_index++;
 	}
     }
-    swap(data, start, swap_index);
+    swap(data, start, swap_index - 1);
     for (i = 0; i < 8; ++i) {
         printf("%d ", data[i]);
     }
     printf("\n");
     //data[swap_index] = v_pivort;
-    return swap_index;
+    return swap_index - 1;
 }
 int Midian(int arr[], int n)
 {

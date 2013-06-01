@@ -1,0 +1,75 @@
+#include<map>
+#include<stdio.h>
+#include<string.h>
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+map<string, string> translate;
+map<string, vector<string> > strlist;
+map<string ,int> strcnt;
+string words[101];
+string sentence;
+char s[102];
+int main()
+{
+    int index = 0, i, j, T, M, N, k = 0, person;
+    cin>>T;
+    for (i = 0; i < T; ++i) {
+        cin>>M>>N;
+	person = 0;
+	for (j = 0; j < N; ++j) {
+	    string base, change;
+	    cin>>base>>change;
+	    strcnt[base] = 0;
+	    strlist[change].push_back(base);
+	    for (vector<string>::iterator it = strlist[base].begin(); it != strlist[base].end(); ++it) {
+	        if (strcnt[*it] >= M) {
+		    continue;
+		} else {
+		    translate[*it] = change;
+		    strcnt[*it]++;
+
+		}
+	    }
+	    translate[base] = change;
+	}
+    getchar();
+    getline(cin, sentence);
+    int len  = sentence.size();
+    index = 0, k = 0;
+    for (j = 0; j < len ;j++) {
+        if (sentence[j] == ' ') {
+	    s[index] = '\0';
+	    //cout<<s<<endl;
+	    words[k].assign(s, strlen(s));
+	    k++;
+	    index = 0;
+	    continue;
+	} else {
+	    s[index] = sentence[j];
+	    index++;
+	}
+    }
+    s[index] = '\0';
+    words[k].assign(s, strlen(s));
+    cout<<"Case #1: ";
+    for (person = 1; person < M; ++person) {
+    for (j = 0; j < k; ++j) {
+        if (translate.find(words[j]) != translate.end()) {
+	    cout<<translate[words[j]]<<" ";
+	} else {
+	    cout<<words[j]<<" ";
+	}
+    }
+    if (translate.find(words[j]) != translate.end()) {
+	cout<<translate[words[j]]<<endl;
+    } else {
+	    cout<<words[j]<<endl;;
+    }
+    }
+    k = 0;
+    }
+    return 0;
+}
+
